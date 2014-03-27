@@ -10,7 +10,10 @@ Rectangle {
     height: parent.height
     color: "#343434"
     property string  root_folder : 'http://' + parent_ip +  ':' + parent_port + parent_router
+    property string  share_folder : 'share/'
     property string  assigned_folder : ''
+    //property variant folder_list: ['/']
+    property var folder_list: new Array()
     //property int  ListDirport : 9011
     //property string  router : '/File/Dir'
     //property string  ipaddress : 'http://' + ListDirIP + ':' + ListDirport + router
@@ -54,8 +57,9 @@ Rectangle {
     }
 
     Component.onCompleted: {
-        console.log("[ipaddress]!!!" + root_folder );
-        JS.loaddir( root_folder );
+        //folder_list.push('/')
+        console.log("[ipaddress]!!!" + 'http://' + parent_ip +  ':' + parent_port + parent_router );
+        JS.loaddir( parent_ip, parent_port, parent_router );
     }
 
     ListModel {
@@ -140,9 +144,10 @@ Rectangle {
                         //if ( path.toString().search('png') != -1)
                         if ( path.toString().search('png') >= 0)
                         {
-                            console.log("[Yes]png request: " + path.toString().search('png'));
-                            assigned_folder = JS.showpng( path );
-                            displaypng.source = 'http://' + parent_ip +  ':' + parent_port + assigned_folder;
+                            //console.log("[Yes]png request: " + path.toString().search('png'));
+                            //console.log('[Yes]png path: ' + 'http://' + parent_ip +  ':' + parent_port + '/' + folder_list.join('/') + '/' + path);
+                            //assigned_folder = JS.showpng( folder_list.join('/') + path );
+                            displaypng.source = 'http://' + parent_ip +  ':' + parent_port + '/' + share_folder + folder_list.join('/') + '/' + path;
                             //console.log("[Yes]assigned_folder: " + displaypng.source);
                             listView.visible = false;
                             displaypng.visible = true;
@@ -152,11 +157,13 @@ Rectangle {
                         //if ( path.toString().search('txt')  != -1)
                         if ( path.toString().search('txt')  >= 0)
                         {
-                            //var json_txt = JS.showtxt( parent_ip , parent_port , path ); //a big bug.
-                            var json_txt = path.toString();
-                            console.log("[Yes]txt request: " + path.toString().search('txt'));
+                            //var json_txt = ''
+                            var json_txt = JS.showtxt( parent_ip , parent_port , share_folder, folder_list.join('/') + '/' + path ); //a big bug.
+                            //var json_txt = path.toString();
+                            //console.log("[Yes]txt request: " + path.toString().search('txt'));
                             //console.log(json_txt);
-                            displaytext.text = json_txt.toString();
+                            //displaytext.text = json_txt.toString();
+                            displaytext.text = json_txt;
                             listView.visible = false;
                             displaytext.visible = true;
                             //displaypng.width = displaypng.sourceSize.width;
@@ -166,8 +173,31 @@ Rectangle {
                     else if( type == "Directory")
                     {
                         //assigned_router = path_list[0] +  assigned_router + '/' + path ;
-                        //console.log("path: " + path);
-                        JS.loadeddir( path );
+                        console.log("[Directory]path: " + path);
+                        if ( path == '..' && folder_list.length > 0)
+                        {
+                            folder_list.pop();
+                        }
+                        else if (path != '..')
+                        {
+                            folder_list.push(path);
+
+                        }
+                        else
+                        {
+                            //console.log( 'The bottom folder now.' );
+                        }
+                        //folder_list.push(path.toString())
+                        //folder_list[folder_list.length] = 'Test_images'
+                        //folder_list.attach(path.toString())
+                        //console.log("folder_list.length: " + folder_list.length);
+                        //for ( var i = 0 ; i < folder_list.length; i++ ) {
+                        //    console.log( '[path_list[' + i + '].toString() ]: ' + folder_list[i].toString() );
+                        //}
+                        //console.log("folder_list[" + folder_list.length-1 + "] " + folder_list[folder_list.length]);
+                        //console.log("folder_list[" + folder_list.length + "] " + folder_list[folder_list.length+1]);
+                        //console.log("folder_list.join: " + folder_list.join('/'));
+                        JS.loadeddir( parent_ip, parent_port, parent_router, '/' + folder_list.join('/') );
                     }
                     else
                         console.log("Clicked.")

@@ -14,7 +14,7 @@ ApplicationWindow {
     property string parent_ip : '127.0.0.1'
     property string parent_hostname : 'tpeo54006596'
     property int  parent_port : 9011
-    property string  parent_router : '/File/Dir'
+    property string  parent_router : '/File/Dir/'
 
     Rectangle {
         color: "#212126"
