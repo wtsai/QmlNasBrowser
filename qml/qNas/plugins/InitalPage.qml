@@ -79,12 +79,8 @@ Rectangle {
                 onClicked: {
                     parent_ip = ip
                     parent_hostname = name
-                    //nas.GridView.currentItem.forceActiveFocus();
-                    //console.log("[Clicked]stackView: " + stackView)
-                    //stackView.push(Qt.resolvedUrl("ListDirPage.qml"))
                     stackView.push(Qt.resolvedUrl("NasHomePage.qml"))
                     slogan = 'Intelligent NAS' + '(' + ip + ')'
-                    //console.log('Pressed: ' + resolvedUrl );
                 }
             }
         }

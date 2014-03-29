@@ -12,7 +12,6 @@ function loaddir(parent_ip, parent_port, parent_router){
             json_loaddir = JSON.parse(doc_loaddir.responseText.toString());
             for (json_index = 0; json_loaddir[json_index] != undefined ; json_index++)
             {
-                //console.log(json[json_index])
                 listDirModel.append({
                     "type": json_loaddir[json_index]['type'],
                     "path": json_loaddir[json_index]['path']
@@ -35,13 +34,11 @@ function loadeddir(parent_ip, parent_port, parent_router, assign_path){
         "type": 'Directory',
         "path": '..'
     })
-    //console.log( '[Address]: http://' + parent_ip + ':' + parent_port + parent_router + assign_path );
     doc_loadeddir.onreadystatechange = function() {
         if (doc_loadeddir.readyState == XMLHttpRequest.DONE) {
             json_loadeddir = JSON.parse(doc_loadeddir.responseText.toString());
             for (json_index = 0; json_loadeddir[json_index] != undefined ; json_index++)
             {
-                //console.log(json[json_index])
                 listDirModel.append({
                     "type": json_loadeddir[json_index]['type'],
                     "path": json_loadeddir[json_index]['path']
@@ -55,31 +52,19 @@ function loadeddir(parent_ip, parent_port, parent_router, assign_path){
 
 }
 
-function showtxt(parent_ip , parent_port, share_folder, assign_path){
-    console.log("assign_path: " + assign_path)
+function showtxt(parent_ip , parent_port, share_folder, assign_path, callback){
     var json_showtxt;
+    var returntxt = '';
     var doc_showtxt = new XMLHttpRequest();
     doc_showtxt.onreadystatechange = function() {
         if (doc_showtxt.readyState == XMLHttpRequest.DONE) {
             json_showtxt = JSON.parse(doc_showtxt.responseText.toString());
-            //console.log( json_showtxt['txt'] );
-            return json_showtxt['txt'].toString();
+            returntxt = json_showtxt['txt'].toString();
+            if (callback)
+                return callback(returntxt);
         }
     }
     doc_showtxt.open("GET", 'http://' + parent_ip +  ':' + parent_port + '/File/Txt/' + assign_path);
     doc_showtxt.send();
-    //console.log( json_showtxt );
-    //console.log( json_showtxt['txt'] );
 
 }
-
-/*
-function destorydir(){
-    listDirModel.clear();
-    var ipaddress = '';
-    assign_path = '';
-    for ( var i = 0 ; i < path_list.length; i++ ) {
-        path_list.pop();
-
-}
-*/

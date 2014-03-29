@@ -49,9 +49,6 @@ Rectangle {
             width: icon_width + spaced
             height: icon_width + spaced + 80
 
-            //property alias text: textitem.text
-            //signal clicked
-
             Rectangle {
                 anchors.left: parent.left
                 anchors.right: parent.right
@@ -86,29 +83,12 @@ Rectangle {
                 height: icon_height
                 source: icon
             }
-            /*
-            Image {
-                anchors.right: parent.right
-                anchors.rightMargin: 20
-                anchors.verticalCenter: parent.verticalCenter
-                source:{
-                    if( type == "File")
-                        "."
-                    else if( type == "Directory")
-                        "../images/navigation_next_item.png"
-                    else
-                        "../images/navigation_next_item.png"
-                }
-            }*/
             MouseArea {
                 id: appmouse
                 anchors.fill: parent
                 onClicked:{
-                    //console.log("[Clicked]stackView: " + stackView)
-                    //loader.source = "ListDirPage.qml"
                     stackView.push(Qt.resolvedUrl("ListDirPage.qml"))
                 }
-                //appDelegateitem.clicked()
             }
         }
     }
@@ -118,7 +98,6 @@ Rectangle {
         anchors.fill: parent
         cellWidth: icon_width + spaced;
         cellHeight: icon_height + spaced + 80;
-        //highlight: nasHighlight
         focus: true
         model: appModel
         delegate: appDelegate1
