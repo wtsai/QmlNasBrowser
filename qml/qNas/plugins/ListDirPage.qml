@@ -1,6 +1,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
+import QtMultimedia 5.0
 import "filelist.js" as JS
 
 Rectangle {
@@ -12,6 +13,10 @@ Rectangle {
     property string  share_folder : 'share/'
     property string  assigned_folder : ''
     property var folder_list: new Array()
+
+    Component.onCompleted: {
+        JS.loaddir( parent_ip, parent_port, parent_router );
+    }
 
     BorderImage {
         id: displaypng
@@ -48,9 +53,57 @@ Rectangle {
         }
     }
 
-    Component.onCompleted: {
-        //console.log("[ipaddress]!!!" + 'http://' + parent_ip +  ':' + parent_port + parent_router );
-        JS.loaddir( parent_ip, parent_port, parent_router );
+    Text {
+        id: displayMusic
+        anchors.fill: parent
+        color: "white"
+        font.pixelSize: 32
+        text: 'displayMusic'
+        visible: false
+
+        MediaPlayer {
+            id: playMusic
+            source: "music.mp3"
+        }
+        MouseArea {
+            id: musicArea
+            anchors.fill: parent
+            onPressed:  {
+                playMusic.stop();
+                listView.visible = true;
+                displayMusic.visible = false;
+            }
+        }
+    }
+
+    Item {
+        id: displayVideo
+        anchors.fill: parent
+        visible: false
+
+        MediaPlayer {
+            id: playVideo
+            autoLoad: false
+            source: "music.mp4"
+        }
+
+        VideoOutput {
+            id: outputArea
+            anchors.fill: parent
+            visible: false
+            source: playVideo
+        }
+
+        MouseArea {
+            id: videoArea
+            anchors.fill: parent
+            onPressed:  {
+                playVideo.stop();
+                listView.visible = true;
+                displayVideo.visible = false;
+                outputArea.visible = false;
+            }
+        }
     }
 
     ListModel {
@@ -147,6 +200,25 @@ Rectangle {
                             });
                             listView.visible = false;
                             displaytext.visible = true;
+                        }
+                        if ( path.toString().search('mp3')  >= 0)
+                        {
+                            JS.showmp3( parent_ip , parent_port , share_folder, folder_list.join('/') + '/' + path , function(MediaPath){
+                                playMusic.source = MediaPath;
+                                playMusic.play();
+                            });
+                            listView.visible = false;
+                            displayMusic.visible = true;
+                        }
+                        if ( path.toString().search('avi') >= 0 || path.toString().search('divx') >= 0 || path.toString().search('MP4') >= 0 || path.toString().search('mkv') >= 0)
+                        {
+                            JS.showvideo( parent_ip , parent_port , share_folder, folder_list.join('/') + '/' + path , function(VideoPath){
+                                playVideo.source = VideoPath;
+                                playVideo.play();
+                            });
+                            listView.visible = false;
+                            displayVideo.visible = true;
+                            outputArea.visible = true;
                         }
                     }
                     else if( type == "Directory")
