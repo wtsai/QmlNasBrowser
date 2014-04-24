@@ -63,6 +63,7 @@ Rectangle {
 
         MediaPlayer {
             id: playMusic
+            autoLoad: false
             source: "music.mp3"
         }
         MouseArea {

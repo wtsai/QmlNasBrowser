@@ -71,12 +71,13 @@ function showtxt(parent_ip , parent_port, share_folder, assign_path, callback){
 
 function showmp3(parent_ip , parent_port, share_folder, assign_path, callback){
     if (callback)
-        return callback('http://' + parent_ip +  ':' + parent_port + '/File/Media/' + assign_path);
-
+        //return callback('http://' + parent_ip +  ':' + parent_port + '/File/Media/' + assign_path);
+        return callback('http://' + parent_ip +  ':' + parent_port + '/File/Music/' + assign_path);
 }
 
 function showvideo(parent_ip , parent_port, share_folder, assign_path, callback){
     if (callback)
-        return callback('http://' + parent_ip +  ':' + parent_port + '/File/Media/' + assign_path);
+        //return callback('http://' + parent_ip +  ':' + parent_port + '/File/Media/' + assign_path);
+        return callback('http://' + parent_ip +  ':' + parent_port + '/File/Video/' + assign_path);
 
 }
