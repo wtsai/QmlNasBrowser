@@ -21,6 +21,7 @@ Rectangle {
             path: 'HomeFolder';
             icon: '../images/kfm-home.png';
         }
+        /*
         ListElement {
             type: 'Directory';
             path: 'MediaPlayer';
@@ -41,6 +42,7 @@ Rectangle {
             path: 'Perference';
             icon: '../images/preferences-system.png';
         }
+        */
     }
     Component {
         id: appDelegate1

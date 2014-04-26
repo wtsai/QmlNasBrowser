@@ -34,6 +34,10 @@ Rectangle {
             onClicked: {
                 listView.visible = true;
                 displaypng.visible = false;
+                displaytext.visible = false;
+                displayMusic.visible = false;
+                displayVideo.visible = false;
+                outputArea.visible = false;
             }
         }
     }
@@ -48,7 +52,11 @@ Rectangle {
             anchors.fill: parent
             onClicked: {
                 listView.visible = true;
+                displaypng.visible = false;
                 displaytext.visible = false;
+                displayMusic.visible = false;
+                displayVideo.visible = false;
+                outputArea.visible = false;
             }
         }
     }
@@ -72,7 +80,11 @@ Rectangle {
             onPressed:  {
                 playMusic.stop();
                 listView.visible = true;
+                displaypng.visible = false;
+                displaytext.visible = false;
                 displayMusic.visible = false;
+                displayVideo.visible = false;
+                outputArea.visible = false;
             }
         }
     }
@@ -101,6 +113,9 @@ Rectangle {
             onPressed:  {
                 playVideo.stop();
                 listView.visible = true;
+                displaypng.visible = false;
+                displaytext.visible = false;
+                displayMusic.visible = false;
                 displayVideo.visible = false;
                 outputArea.visible = false;
             }
@@ -120,7 +135,7 @@ Rectangle {
         Item {
             id: listDirDelegateitem
             width: parent.width
-            height: 88
+            height: 120
 
             property alias text: textitem.text
             signal clicked
@@ -142,7 +157,7 @@ Rectangle {
             Text {
                 id: textitem
                 color: "white"
-                font.pixelSize: 32
+                font.pixelSize: 55
                 text: path
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: dirtype.right
@@ -154,8 +169,8 @@ Rectangle {
                 anchors.left: parent.left
                 anchors.rightMargin: 0
                 anchors.verticalCenter: parent.verticalCenter
-                width: 48
-                height: 48
+                width: 80
+                height: 80
                 source: {
                     if( type == "File")
                         "../images/source.png"
@@ -186,32 +201,16 @@ Rectangle {
                     if( type == "File")
                     {
                         console.log("path: " + path);
-                        if ( path.toString().search('png') >= 0)
-                        {
-                            displaypng.source = 'http://' + parent_ip +  ':' + parent_port + '/' + share_folder + folder_list.join('/') + '/' + path;
-                            listView.visible = false;
-                            displaypng.visible = true;
-                            displaypng.width = displaypng.sourceSize.width;
-                            displaypng.height = displaypng.sourceSize.height;
-                        }
-                        if ( path.toString().search('txt')  >= 0)
-                        {
-                            JS.showtxt( parent_ip , parent_port , share_folder, folder_list.join('/') + '/' + path , function(data){
-                                displaytext.text = data;
-                            });
-                            listView.visible = false;
-                            displaytext.visible = true;
-                        }
-                        if ( path.toString().search('mp3')  >= 0)
-                        {
-                            JS.showmp3( parent_ip , parent_port , share_folder, folder_list.join('/') + '/' + path , function(MediaPath){
-                                playMusic.source = MediaPath;
-                                playMusic.play();
-                            });
-                            listView.visible = false;
-                            displayMusic.visible = true;
-                        }
-                        if ( path.toString().search('avi') >= 0 || path.toString().search('divx') >= 0 || path.toString().search('MP4') >= 0 || path.toString().search('mkv') >= 0)
+                        if ( path.toString().search('avi') >= 0 ||
+                             path.toString().search('AVI') >= 0 ||
+                             path.toString().search('mkv') >= 0 ||
+                             path.toString().search('MKV') >= 0 ||
+                             path.toString().search('MP4') >= 0 ||
+                             path.toString().search('mp4') >= 0 ||
+                             path.toString().search('divx') >= 0 ||
+                             path.toString().search('DIVX') >= 0 ||
+                             path.toString().search('swf') >= 0 ||
+                             path.toString().search('SWF') >= 0)
                         {
                             JS.showvideo( parent_ip , parent_port , share_folder, folder_list.join('/') + '/' + path , function(VideoPath){
                                 playVideo.source = VideoPath;
@@ -220,6 +219,52 @@ Rectangle {
                             listView.visible = false;
                             displayVideo.visible = true;
                             outputArea.visible = true;
+                        }
+                        else if ( path.toString().search('mp3')  >= 0 ||
+                             path.toString().search('MP3')  >= 0 ||
+                             path.toString().search('wma')  >= 0 ||
+                             path.toString().search('WMA')  >= 0 ||
+                             path.toString().search('WAV')  >= 0 ||
+                             path.toString().search('wav')  >= 0 ||
+                             path.toString().search('ogg') >= 0 ||
+                             path.toString().search('OGG') >= 0)
+                        {
+                            JS.showmp3( parent_ip , parent_port , share_folder, folder_list.join('/') + '/' + path , function(MediaPath){
+                                playMusic.source = MediaPath;
+                                playMusic.play();
+                            });
+                            listView.visible = false;
+                            displayMusic.visible = true;
+                        }
+                        else if ( path.toString().search('png') >= 0 ||
+                             path.toString().search('jpg') >= 0 ||
+                             path.toString().search('gif') >= 0 ||
+                             path.toString().search('tif') >= 0 ||
+                             path.toString().search('bmp') >= 0 ||
+                             path.toString().search('PNG') >= 0 ||
+                             path.toString().search('JPG') >= 0 ||
+                             path.toString().search('GIF') >= 0 ||
+                             path.toString().search('TIF') >= 0 ||
+                             path.toString().search('BMP') >= 0)
+                        {
+                            displaypng.source = 'http://' + parent_ip +  ':' + parent_port + '/' + share_folder + folder_list.join('/') + '/' + path;
+                            listView.visible = false;
+                            displaypng.visible = true;
+                            displaypng.width = displaypng.sourceSize.width;
+                            displaypng.height = displaypng.sourceSize.height;
+                        }
+                        else if ( path.toString().search('txt')  >= 0 ||
+                             path.toString().search('TXT')  >= 0 ||
+                             path.toString().search('js')  >= 0 ||
+                             path.toString().search('JS')  >= 0 ||
+                             path.toString().search('css')  >= 0 ||
+                             path.toString().search('CSS')  >= 0 )
+                        {
+                            JS.showtxt( parent_ip , parent_port , share_folder, folder_list.join('/') + '/' + path , function(data){
+                                displaytext.text = data;
+                            });
+                            listView.visible = false;
+                            displaytext.visible = true;
                         }
                     }
                     else if( type == "Directory")
@@ -240,7 +285,8 @@ Rectangle {
                         JS.loadeddir( parent_ip, parent_port, parent_router, '/' + folder_list.join('/') );
                     }
                     else
-                        console.log("Clicked.")
+                        console.log("[mouse]Clicked.")
+                        //folder_list.pop();
                 }
             }
         }
